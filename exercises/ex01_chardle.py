@@ -4,7 +4,7 @@ __author__ = "730361113"
 
 word: str = input("Enter a 5-charachter word. ")
 if len(word) == 5:
-    letter: str = input("Enter a single charachter. ")
+    letter: str = input("Enter a single charachter.")
     if len(letter) == 1:
         print("Searching for " + letter + " in " + word)
         match: int = 0
