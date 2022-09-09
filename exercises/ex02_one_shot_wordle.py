@@ -1,16 +1,17 @@
 """EX02 - This is one-shot Wordle! I'll use emojis and f-strings."""
 
-__author__: "730361113"
+__author__ = "730361113"
 
-#emoji unicode things
 WHITE_BOX: str = "\U00002B1C"
 GREEN_BOX: str = "\U0001F7E9"
 YELLOW_BOX: str = "\U0001F7E8"
 
 wordle: str = "python"
 guess: str = input(f"What is your {len(wordle)}-letter guess? ")
-while len(guess) != len(wordle): 
-    guess: str = input("That was not 6 letters! Try again: ")
+length: str = input("That was not 6 letters! Try again: ")
+if len(guess) != len(wordle): 
+    print(length)
+    
 
 i: int = 0
 output: str = ""
