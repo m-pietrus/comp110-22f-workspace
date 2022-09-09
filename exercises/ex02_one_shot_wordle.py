@@ -8,10 +8,8 @@ YELLOW_BOX: str = "\U0001F7E8"
 
 wordle: str = "python"
 guess: str = input(f"What is your {len(wordle)}-letter guess? ")
-length: str = input("That was not 6 letters! Try again: ")
-if len(guess) != len(wordle): 
-    print(length)
-    
+while len(guess) != len(wordle): 
+    guess: str = input("That was not 6 letters! Try again: ")
 
 i: int = 0
 output: str = ""
