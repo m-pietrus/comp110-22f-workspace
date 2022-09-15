@@ -6,10 +6,10 @@ WHITE_BOX: str = "\U00002B1C"
 GREEN_BOX: str = "\U0001F7E9"
 YELLOW_BOX: str = "\U0001F7E8"
 
-wordle: str = "python"
+wordle: str = "teeths"
 guess: str = input(f"What is your {len(wordle)}-letter guess? ")
 while len(guess) != len(wordle): 
-    guess: str = input("That was not 6 letters! Try again: ")
+    guess: str = input(f"That was not {len(wordle)} letters! Try again: ")
 
 i: int = 0
 output: str = ""
