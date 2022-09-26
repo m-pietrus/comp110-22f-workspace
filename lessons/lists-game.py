@@ -14,6 +14,16 @@ print(rolls)
 rolls.pop(len(rolls) - 1)
 print(rolls)
 
+#Sum the values of our rolls!
+i: int = 0
+sum: int = 0
+while i < len(rolls):
+    sum = sum + rolls[i]
+    i = i + 1
+
+print(f"Total score: {sum}")
+
+
 # rolls: list[int] = list()
 # rolls.append(randint(1, 6))
 # rolls.append(randint(1, 6))
