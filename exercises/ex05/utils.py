@@ -17,17 +17,17 @@ def concat(listA: list[int], listB: list[int]) -> list[int]:
     return listA + listB
 
 
-def sub(set: list[int], start: int, end: int) -> list[int]:
+def sub(xs: list[int], start: int, end: int) -> list[int]:
     if start < 0:
         start: int = 0
-    if end > len(set) - 1:
-        end: int = len(set) - 1
-    if len(set) == 0 or start > len(set) or end <= 0:
+    if end > len(xs) - 1:
+        end: int = len(xs) - 1
+    if len(xs) == 0 or start > len(xs) or end <= 0:
         return []
-    while len(set) >= end + 1:
-        set.pop(end)
+    while len(xs) >= end + 1:
+        xs.pop(end)
     i: int = 0
     while i < (start - 1):
-        set.pop(0)
+        xs.pop(0)
         i = i + 1
     return set
