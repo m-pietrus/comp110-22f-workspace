@@ -8,7 +8,7 @@ from exercises.ex05.utils import only_evens, sub, concat
 
 def test_only_evens() -> None:
     edge: list[int] = []
-    use1: list[int] = [0, 2, 4, 6,]
+    use1: list[int] = [11, 13, 15, 17]
     use2: list[int] = [0, 1, 2, 3, 4, 5, 6, 7]
     assert only_evens(edge) == []
     assert only_evens(use1) == []
@@ -24,8 +24,6 @@ def test_concat() -> None:
     assert concat(use1A, use1B) == [0, 1, 2, 3, 3, 2, 1, 0]
     use2A: list[int] = []
     use2B: list[int] = [97, 98, 99, 100]
-    assert concat(edgeA, edgeB) == []
-    assert concat(use1A, use1B) == [0, 1, 2, 3, 3, 2, 1, 0]
     assert concat(use2A, use2B) == use2B
 
 
