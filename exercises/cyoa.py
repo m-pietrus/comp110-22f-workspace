@@ -128,7 +128,7 @@ def challenge(health: int, points: int) -> int:
             print("You've got a couple scratches on you leg, but will live to tell the tale")
             health += 5
     return health
-    
+
 
 def main() -> None:
     """Where the game is played!"""
@@ -146,30 +146,62 @@ def main() -> None:
     health: int = 0
     day: int = 1
     points: int = 0
-    while distance < 40.6 and day < 7 and forecast + health < 15:
+    while distance < 40.6 and day < 7:
         print(f" === Day {day} === ")
         forecast = (weather(month))
         time: int = int(input("What time do you want to start hiking in the morning? Please enter an integer between 1 and 12. "))
         (challenge(health, points))
         distance += 15 - health - forecast + 8 - time
+        if distance >= 10.2:
+            print("You've made it to Mollies Ridge Shelter. Type 1 or 2 to make your decision.")
+            mollies: int = int(input("(1)Stay the night in the shelter or (2)Continue on to Newfound Gap? "))
+            if mollies == 1:
+                distance = 10.2
+                print("The shelter is warm and protects you from the wind. But the spring nearby is dry and you go to bed thirsty.")
+                health = health + 2
         print(f"You've hiked {distance} miles total. Newfound Gap is {40.6 - distance} miles away.")
+            else:
+                print("You continue on past the shelter and find the perfect place to pitch your tent on ")
+                print(f"You've hiked {distance} miles total. Newfound Gap is {40.6 - distance} miles away.")
+        else:
+            print(f"You've hiked {distance} miles total. Newfound Gap is {40.6 - distance} miles away.")
+        if distance >= 17.9:
+            print("Ahoy! There's a stranger ahead. She seems to be looking for something.")
+            dolly: int = int("Would you like to offer her help? Type (1)to help look or (2)to keep hiking. ")
+            if dolly == 1:
+                print("Welcome to Good ol' Rocky Top the woman says")
+                print("\"Can you help you find something ma'am? you reply\"")
+                print("\"You could have a little bit ago, but some other stranger already helped me find it!\"")
+                print("\"But here, just for offering your time, here's some corn\"")
+                print("The woman hands you a jar. Understanding, you unscrew the cap and take a drink.")
+                print("The drink makes you feel alive! And you hit the trails with more vigor than you've had in years.")
+                health = 0
+            else:
+                print("You continue on past her, wondering who that woman was...she looked a little familiar...")
+        if distance >= 28.6:
+            print("You've made it to Derrick Knob Shelter!")
+        if distance >= 38.9:
+            print("You've made it to Clingman's Dome!")
+        if distance >= 40.6:
+            print(f"Congratulations, you made it to Newfound Gap in {day} days!")
         day += 1
         points += 1
-    if forecast + health >= 15:
-        print("The wear and tear of the journey pushes you to your breaking point.")
-        print("Thankfully, a local boyscout troop is passing by right as you begin to lose it, ")
-        print("and they've been practicing their fireman-carries.")
-        print("You're badly hurt, but manage to call 911 to get airlifted.")
-        print(f"Thank you for playing, you lasted {points} days.")
-        quit()
+        if forecast + health >= 15:
+            print("The wear and tear of the journey pushes you to your breaking point.")
+            print("Thankfully, a local boyscout troop is passing by right as you begin to lose it, ")
+            print("and they've been practicing their fireman-carries.")
+            print("You're badly hurt, but manage to call 911 to get airlifted.")
+            print(f"Thank you for playing, you lasted {points + 1} days.")
+            quit()
     if distance >= 40.6:
         print(f"Congratulations, you made it to Newfound Gap in {day} days!")
         print(f"You've spent a total of {points + 1} on trail.")
-        again: int = int(input("If you would like to keep playing please type 1, otherwise, type 2: "))
-        if again == 1:
-           print("Run again?")
-        else:
-            quit()
+    again: int = int(input("If you would like to keep playing please type 1, otherwise, type 2: "))
+    if again == 1:
+        print("Run again?")
+    else:
+        print(f"Thank you for playing, {name}. You spent a total of {points + 1} days on trail. ")
+        quit()
 
     
 if __name__ == "__main__":
