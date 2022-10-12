@@ -5,24 +5,31 @@ __author__ = "730361113"
 
 from random import randint
 
+points: int = 0
+player: str = "First Run"
 
-def greet(name: str) -> None:
+
+def greet() -> None:
     """Gives player an introduction to the AT and briefs them on their first decision."""
-    print(f" === Hello, {name}, welcome to The Great Smokey Mountains! === ")
-    print("The Smokies are a an old mountain range rising to heights over 6600 feet on the NC-TN border.")
+    global player
+    player = (input("What is your name? "))
+    if len(player) == 0:
+        player = str(input("Please input your name. "))
+    print(f" === Hello, {player}, welcome to The Great Smokey Mountains! === ")
+    print("The Smokies are an ancient mountain range rising to heights over 6600 feet on the NC-TN border.")
     print("They are well known for the beatiful sights and wildlife that can be seen both at summits and on the mountain-side.")
-    print("People travel from all over to experience its beauty, and some even venture into the backcountry on multi-day backpacking trips.")
-    print("Let's try hiking from Fontana Dam in the South to the Newfound Gap outside of Gatlinburg Tennesse.")
+    print("People travel from all over to experience its beauty, with opportunities to leave behind civilization on a backpacking trip.")
+    print("Let's try backpacking from Fontana Dam in the South to the Newfound Gap outside of Gatlinburg Tennesse.")
     print("So when do you want to start? Too early or too late in the year, and you'll risk a blizzard!")
 
 
-def start(month: int, name: str) -> None:
+def start(month: int) -> None:
     """Makes sure player has picked an acceptable date and tells them which month they've chosen."""
     while month >= 10 or month <= 2:
         print("Are you sure you want to start then? It'll be too cold for sure!")
         month: int = int(input("Try and picking a different start-date here: ")) 
     if month == 0:
-        print(f"Hiking isn't for everyone. Goodbye {name}. ")
+        print(f"Hiking isn't for everyone. Goodbye {player}. ")
         quit()
     if month == 3:
         print("You have chosen to start in March.")
@@ -41,7 +48,7 @@ def start(month: int, name: str) -> None:
     
 
 def weather(month: int) -> int:
-    """Provides a random weather report. """
+    """Provides a random weather report."""
     weather: int = 0
     if month == 3:
         if randint(1, 2) == 1:
@@ -68,18 +75,18 @@ def weather(month: int) -> int:
             print("The weather is clear and it is cool.")
             weather += 1
     if month == 7 or month == 8:
-        if randint (1, 4) == 1:
+        if randint(1, 4) == 1:
             print("It is very hot.")
             weather += 4
         else: 
-            if randint (1, 2) == 1:
+            if randint(1, 2) == 1:
                 print("It is raining.")
                 weather += 3
             else:
                 print("It is clear.")
-                weather +=1
+                weather += 1
     if month == 9:
-        if randint (1, 2) == 1:
+        if randint(1, 2) == 1:
             print("It is clear.")
             weather += 1
         else:
@@ -90,7 +97,7 @@ def weather(month: int) -> int:
 
 
 def challenge(health: int, points: int) -> int:
-    """Two health checks"""
+    """Two health checks."""
     choice: int = 0
     if randint(1, 2) == 1:
         print("You have begun to run out of water. You may:")
@@ -132,25 +139,26 @@ def challenge(health: int, points: int) -> int:
 
 def main() -> None:
     """Where the game is played!"""
-    name: str = str(input("What is your name? "))
-    if len(name) == 0:
-        name: str = str(input("Please input your name. "))
-    (greet(name))
+    if player == "First Run":
+        global points
+        points = 0
+    greet()
     print(" === When will you start? ===")
     month: int = int(input("Reply with 1 for January, 2 for February, and so on. Reply with 0 to decide not to hike. "))
-    start(month, name)
-    print(f"Welcome to Fontana Dam, NC, where you will start your hike. Newfound Gap lies 40.6 miles North")
+    start(month)
+    print("Welcome to Fontana Dam, NC, where you will start your hike. Newfound Gap lies 40.6 miles North.")
     print("You have enough food to last 6 days.")
     forecast: int = 0
     distance: int = 0
     health: int = 0
     day: int = 1
     points: int = 0
+    checkpoint: int = 0
     while distance < 40.6 and day < 7:
         print(f" === Day {day} === ")
         forecast = (weather(month))
         time: int = int(input("What time do you want to start hiking in the morning? Please enter an integer between 1 and 12. "))
-        (challenge(health, points))
+        challenge(health, points)
         distance += 15 - health - forecast + 8 - time
         if distance >= 10.2:
             print("You've made it to Mollies Ridge Shelter. Type 1 or 2 to make your decision.")
