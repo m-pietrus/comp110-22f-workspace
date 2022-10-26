@@ -3,7 +3,8 @@
 __author__ = "730361113"
 
 
-from exercises.ex07.dictionary import invert, favorite_color, count
+import pytest
+from exercises.ex07.dictionary import count, favorite_color, invert
 
 
 def test_invert_use_one() -> None:
@@ -24,10 +25,19 @@ def test_invert_use_two() -> None:
     """With the same key?"""
     key_first: dict[str, str] = {
         "North": "Carolina",
-        "South": "Carolina",
+        "New": "York",
         "Rhode": "Island"
     }
-    assert invert(key_first) == KeyError("Each value in the new dictionary must be unique.")
+    assert invert(key_first) == {
+        "Carolina": "North",
+        "York": "New",
+        "Island": "Rhode"
+    }
+
+
+with pytest.raises(KeyError):
+    key_first = {"North": "Carolina", "South": "Carolina"}
+    invert(key_first)
 
 
 def test_invert_edge() -> None:
@@ -43,7 +53,7 @@ def test_favorite_color_use_one() -> None:
         "Grayson": "Gray",
         "Aster": "Green",
     }
-    assert favorite_color(dictionary) == str("Green")
+    assert favorite_color(dictionary) == "Green"
 
 
 def test_favorite_color_use_two() -> None:
@@ -53,13 +63,13 @@ def test_favorite_color_use_two() -> None:
         "Grayson": "Gray",
         "Krista": "Black",
     }
-    assert favorite_color(dictionary) == str("Green")
+    assert favorite_color(dictionary) == "Green"
 
 
 def test_favorite_color_edge() -> None:
     """What happens with an empty list?"""
     dictionary: dict[str, str] = {}
-    assert favorite_color(dictionary) == str()
+    assert favorite_color(dictionary) == ""
 
 
 def test_count_use_one() -> None:
