@@ -6,7 +6,7 @@ from exercises.ex09 import constants
 from math import sin, cos, pi
 
 
-__author__ = ""  # TODO
+__author__ = "730361113"
 
 
 class Point:
@@ -30,7 +30,7 @@ class Cell:
     """An individual subject in the simulation."""
     location: Point
     direction: Point
-    sickness: int = 0
+    sickness: int = constants.VULNERABLE
 
     def __init__(self, location: Point, direction: Point):
         """Construct a cell with its location and direction."""
@@ -48,6 +48,24 @@ class Cell:
     def color(self) -> str:
         """Return the color representation of a cell."""
         return "black"
+
+    def contract_disease(self) -> None:
+        """If called, changes a cell to infected."""
+        self.sickeness = constants.INFECTED
+
+    def is_vulnerable(self) -> bool:
+        """Asks if a cell is vulnerable."""
+        if self.sickness == constants.VULNERABLE:
+            return True
+        else:
+            return False
+    
+    def is_infected(self) -> bool:
+        """Asks if a cell is infected."""
+        if self.sickness == constants.INFECTED:
+            return True
+        else:
+            return False
 
 
 class Model:
