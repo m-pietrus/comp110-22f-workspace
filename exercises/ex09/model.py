@@ -3,7 +3,7 @@
 from __future__ import annotations
 from random import random
 from exercises.ex09 import constants
-from math import sin, cos, pi
+from math import sin, cos, pi, sqrt
 
 
 __author__ = "730361113"
@@ -25,6 +25,12 @@ class Point:
         y: float = self.y + other.y
         return Point(x, y)
 
+    def distance(self, other: Point) -> float:
+        """Outputs distance as a float value between two points."""
+        dist: float = 0
+        dist = sqrt(((self.x - other.x) ** 2) + ((self.y - other.y) ** 2))
+        return dist
+
 
 class Cell:
     """An individual subject in the simulation."""
@@ -37,21 +43,20 @@ class Cell:
         self.location = location
         self.direction = direction
 
-    # Part 1) Define a method named `tick` with no parameters.
-    # Its purpose is to reassign the object's location attribute
-    # the result of adding the self object's location with its
-    # direction. Hint: Look at the add method.
     def tick(self) -> None:
         """Reassign the object's location attribute."""
         self.location = self.location.add(self.direction)
         
     def color(self) -> str:
         """Return the color representation of a cell."""
-        return "black"
+        if Cell.is_vulnerable(self):
+            return "gray"
+        else:
+            return "orange"
 
     def contract_disease(self) -> None:
         """If called, changes a cell to infected."""
-        self.sickeness = constants.INFECTED
+        self.sickness = constants.INFECTED
 
     def is_vulnerable(self) -> bool:
         """Asks if a cell is vulnerable."""
@@ -59,13 +64,20 @@ class Cell:
             return True
         else:
             return False
-    
+        
     def is_infected(self) -> bool:
         """Asks if a cell is infected."""
         if self.sickness == constants.INFECTED:
             return True
         else:
             return False
+
+    def contact_with(self, other: Cell) -> None:
+        """Infects other cells!"""
+        if Cell.is_vulnerable(self) and Cell.is_infected(other):
+            Cell.contract_disease(self)
+        if Cell.is_vulnerable(other) and Cell.is_infected(self):
+            Cell.contract_disease(other)
 
 
 class Model:
@@ -74,14 +86,20 @@ class Model:
     population: list[Cell]
     time: int = 0
 
-    def __init__(self, cells: int, speed: float):
+    def __init__(self, cells: int, speed: float, initial_infected: int):
         """Initialize the cells with random locations and directions."""
+        if initial_infected >= cells or initial_infected <= 0:
+            raise ValueError("Invalid number of initial infections.") 
         self.population = []
         for _ in range(cells):
             start_location: Point = self.random_location()
             start_direction: Point = self.random_direction(speed)
             cell: Cell = Cell(start_location, start_direction)
             self.population.append(cell)
+        i: int = 0
+        while i < initial_infected:
+            Cell.contract_disease(self.population[i])
+            i += 1
     
     def tick(self) -> None:
         """Update the state of the simulation by one time step."""
@@ -89,6 +107,7 @@ class Model:
         for cell in self.population:
             cell.tick()
             self.enforce_bounds(cell)
+        Model.check_contacts(self)
 
     def random_location(self) -> Point:
         """Generate a random location."""
@@ -117,6 +136,20 @@ class Model:
         if cell.location.y < constants.MIN_Y:
             cell.location.y = constants.MIN_Y
             cell.direction.y *= -1.0
+
+    def check_contacts(self) -> None:
+        """Checks to see if in contact, and if so infects!"""
+        i: int = 0
+        while i < len(self.population):
+            idx: int = 1
+            subject: Cell = self.population[i]
+            tester: Cell = self.population[idx]
+            if subject.is_infected() or tester.is_infected():
+                while idx < len(self.population):
+                    if Point.distance(subject.location, tester.location) <= constants.CELL_RADIUS:
+                        Cell.contact_with(subject, tester)
+                    idx += 1
+            i += 1
 
     def is_complete(self) -> bool:
         """Method to indicate when the simulation is complete."""
