@@ -46,17 +46,29 @@ class Cell:
     def tick(self) -> None:
         """Reassign the object's location attribute."""
         self.location = self.location.add(self.direction)
+        if Cell.is_infected(self):
+            self.sickness += 1
+        if self.sickness > constants.RECOVERY_PERIOD:
+            Cell.immunize(self)
         
     def color(self) -> str:
         """Return the color representation of a cell."""
         if Cell.is_vulnerable(self):
             return "gray"
+        if Cell.is_immune(self):
+            return "dark green"
+        if Cell.is_infected(self):
+            return "crimson"
         else:
-            return "orange"
+            raise ValueError
 
     def contract_disease(self) -> None:
         """If called, changes a cell to infected."""
         self.sickness = constants.INFECTED
+
+    def immunize(self) -> None:
+        """If called, changes a cell to immune."""
+        self.sickness = constants.IMMUNE
 
     def is_vulnerable(self) -> bool:
         """Asks if a cell is vulnerable."""
@@ -67,7 +79,14 @@ class Cell:
         
     def is_infected(self) -> bool:
         """Asks if a cell is infected."""
-        if self.sickness == constants.INFECTED:
+        if self.sickness >= constants.INFECTED:
+            return True
+        else:
+            return False
+
+    def is_immune(self) -> bool:
+        """Asks if a cell is immune."""
+        if self.sickness == constants.IMMUNE:
             return True
         else:
             return False
@@ -79,17 +98,17 @@ class Cell:
         if Cell.is_vulnerable(other) and Cell.is_infected(self):
             Cell.contract_disease(other)
 
-
+    
 class Model:
     """The state of the simulation."""
 
     population: list[Cell]
     time: int = 0
 
-    def __init__(self, cells: int, speed: float, initial_infected: int):
+    def __init__(self, cells: int, speed: float, initial_infected: int, initial_immune: int = 0):
         """Initialize the cells with random locations and directions."""
-        if initial_infected >= cells or initial_infected <= 0:
-            raise ValueError("Invalid number of initial infections.") 
+        if initial_infected + initial_immune >= cells or initial_infected <= 0:
+            raise ValueError 
         self.population = []
         for _ in range(cells):
             start_location: Point = self.random_location()
@@ -100,6 +119,11 @@ class Model:
         while i < initial_infected:
             Cell.contract_disease(self.population[i])
             i += 1
+        idx: int = 0
+        while idx < initial_immune:
+            Cell.immunize(self.population[i])
+            i += 1
+            idx += 1
     
     def tick(self) -> None:
         """Update the state of the simulation by one time step."""
@@ -138,19 +162,27 @@ class Model:
             cell.direction.y *= -1.0
 
     def check_contacts(self) -> None:
-        """Checks to see if in contact, and if so infects!"""
+        """Checks to see if in vulnerable, then if in contact, then if in contact with an infected."""
         i: int = 0
         while i < len(self.population):
-            idx: int = 1
-            subject: Cell = self.population[i]
-            tester: Cell = self.population[idx]
-            if subject.is_infected() or tester.is_infected():
-                while idx < len(self.population):
-                    if Point.distance(subject.location, tester.location) <= constants.CELL_RADIUS:
-                        Cell.contact_with(subject, tester)
-                    idx += 1
+            idx: int = 0
+            while idx < len(self.population):
+                subject: Cell = self.population[i]
+                tester: Cell = self.population[idx]
+                if subject.sickness != -1 and subject.sickness != -1:
+                    if subject.sickness != 0 and subject.sickness != 0:
+                        if Point.distance(subject.location, tester.location) <= constants.CELL_RADIUS:
+                            subject.contact_with(tester)
+                idx += 1
             i += 1
 
     def is_complete(self) -> bool:
         """Method to indicate when the simulation is complete."""
-        return False
+        i: int = 0
+        while i < len(self.population):
+            if self.population[i].sickness > constants.VULNERABLE:
+                return False
+            i += 1
+        else:
+            print("No more infected cells remain.")
+            return True

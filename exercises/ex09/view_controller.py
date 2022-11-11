@@ -8,6 +8,7 @@ from time import time_ns
 
 
 NS_TO_MS: int = 1000000
+NS_TO_S: int = 1000000000
 
 
 class ViewController:
@@ -47,6 +48,8 @@ class ViewController:
         self.screen.update()
 
         if self.model.is_complete():
+            print(f"Total elapsed time: {time_ns() // NS_TO_S}")
+            # TODO Fix the time equation
             return
         else:
             end_time = time_ns() // NS_TO_MS
