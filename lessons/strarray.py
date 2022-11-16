@@ -11,7 +11,7 @@ class StrArray:
     def __init__(self, items: list[str]):
         self.items = items
 
-    def __repr__(self)  -> str:
+    def __repr__(self) -> str:
         return f"StrArray({self.items})"
 
     def __add__(self, rhs: Union[str, StrArray]) -> StrArray:
