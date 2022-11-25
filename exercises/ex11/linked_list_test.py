@@ -1,7 +1,7 @@
 """Tests for linked list utils."""
 
 import pytest
-from exercises.ex11.linked_list import Node, last
+from exercises.ex11.linked_list import Node, is_equal, last, value_at, max, linkify, scale
 
 __author__ = "730361113"
 
