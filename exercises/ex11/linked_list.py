@@ -33,52 +33,55 @@ def is_equal(lhs: Optional[Node], rhs: Optional[Node]) -> bool:
     else:
         return is_equal(lhs.next, rhs.next)
 
-
 def last(head: Optional[Node]) -> int:
     """Returns the last value of a Linked List; raises a ValueError if the list is empty."""
-    # TODO: Finish! Just a skeleton here.
     if head is None:
         raise ValueError("last cannot be called with None")
     else:
-        return None
+        if head.next is None:
+            return head.data
+        else:
+            return last(head.next)
 
 def value_at(head: Optional[Node], index: int) -> int:
     """Returns data of head at index; raises ValueError if index does not exist."""
-    place_holder: int = 0
-    # TODO: Clean up the bones.
-    # Hint 0: In recursive case, modify args to bring recursive call close to hint 2.
-    #         Start by diagramming what this means for a call to value_at with a list 
-    #         of two or more nodes and an intial index of 1.
-    # Hint 1: An edge case occurs with the list is empty.
-    #         raise IndexError("Index is out of bounds on the list.")
-    # Hint 2: A second base case occurs when the index is 0. 
-    #         Return the data of the current Node being processed on the list here. 
-    return place_holder
+    if head is None:
+        raise ValueError("Index is out of bounds on the list.")
+    else:
+        if index == 0:
+            return head.data
+        else:
+            return value_at(head.next, index - 1)
 
 def max(head: Optional[Node]) -> int:
     """Returns the maximum data value in the Linked List; raises ValueError if the Linked List is empty."""
-    place_holder: int = 0
-    # TODO: I can see the cobwebs already...
-    # Example usage:
-    #   >>> max(Node(10, Node(20, Node(30, None))))
-    #   30
-    #   >>> max(None)
-    #   ValueError: Cannot call max with None.
-    return place_holder
+    if head is None:
+        raise ValueError("Cannot call max with None.")
+    else:
+        if head.next is None:
+            return head.data
+        else:
+            if head.data < head.next.data:
+                return max(head.next)
+            else:
+                head.next = head.next.next
+                return max(head)
 
 def linkify(items: list[int]) -> Optional[Node]:
     """Returns a Linked List of Nodes with the same values in the same order as the input list."""
-    # TODO: skelton slice subscribtion 
-    # Example usage:
-    #   >>> linkify([1, 2, 3])
-    #   1 -> 2 -> 3 -> None
-    # TODO: attempt at adding along assessment application
-    return None
+    # TODO: Doesn't 'automagically' output as a str
+    if len(items) != 1:
+        return Node(items[0], linkify(items[1:]))
+    else:
+        return Node(items[0], None)
+    
 
 def scale(head: Optional[Node], factor: int) -> Optional[Node]:
     """Returns a new Linked List of Nodes where each value in the original is scaled by factor."""
-    # TODO: exterminate all arachnids
-    # Example usage:
-    #   >>> scale(linkify([1, 2, 3]), 2)
-    #   2 -> 4 -> 6 -> None
-    return None
+    # TODO: Ah! There's another one in this function!
+    if head is None:
+        raise ValueError("Index is out of bounds on the list.")
+    if head.next is None:
+        return Node(head.data * factor, None)
+    else:
+        return Node(head.data * factor, scale(head.next, factor))
