@@ -33,6 +33,7 @@ def is_equal(lhs: Optional[Node], rhs: Optional[Node]) -> bool:
     else:
         return is_equal(lhs.next, rhs.next)
 
+
 def last(head: Optional[Node]) -> int:
     """Returns the last value of a Linked List; raises a ValueError if the list is empty."""
     if head is None:
@@ -43,15 +44,17 @@ def last(head: Optional[Node]) -> int:
         else:
             return last(head.next)
 
+
 def value_at(head: Optional[Node], index: int) -> int:
     """Returns data of head at index; raises ValueError if index does not exist."""
     if head is None:
-        raise ValueError("Index is out of bounds on the list.")
+        raise IndexError("Index is out of bounds on the list.")
     else:
         if index == 0:
             return head.data
         else:
             return value_at(head.next, index - 1)
+
 
 def max(head: Optional[Node]) -> int:
     """Returns the maximum data value in the Linked List; raises ValueError if the Linked List is empty."""
@@ -67,20 +70,22 @@ def max(head: Optional[Node]) -> int:
                 head.next = head.next.next
                 return max(head)
 
+
 def linkify(items: list[int]) -> Optional[Node]:
     """Returns a Linked List of Nodes with the same values in the same order as the input list."""
-    # TODO: Doesn't 'automagically' output as a str
-    if len(items) != 1:
-        return Node(items[0], linkify(items[1:]))
+    if len(items) == 0:
+        return None
     else:
-        return Node(items[0], None)
+        if len(items) == 1:
+            return Node(items[0], None)
+        else:
+            return Node(items[0], linkify(items[1:]))
     
 
 def scale(head: Optional[Node], factor: int) -> Optional[Node]:
     """Returns a new Linked List of Nodes where each value in the original is scaled by factor."""
-    # TODO: Ah! There's another one in this function!
     if head is None:
-        raise ValueError("Index is out of bounds on the list.")
+        return None
     if head.next is None:
         return Node(head.data * factor, None)
     else:

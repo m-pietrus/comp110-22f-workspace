@@ -2,6 +2,7 @@
 
 import pytest
 from exercises.ex11.linked_list import Node, is_equal, last, value_at, max, linkify, scale
+from typing import Optional
 
 __author__ = "730361113"
 
@@ -20,8 +21,8 @@ def test_last_non_empty() -> None:
 
 def test_value_at_empty() -> None:
     """Value_at of an empty Linked List should raise a ValueError."""
-    with pytest.raises(ValueError):
-        last(None)
+    with pytest.raises(IndexError):
+        value_at(None, 9)
 
 
 def test_value_at_non_empty() -> None:
@@ -37,10 +38,17 @@ def test_max_empty() -> None:
         last(None)
 
 
-def test_max_non_empty() -> None:
-    """Max of a non-empty Linked List should return the maximum data value."""
+def test_max_first() -> None:
+    """Max of an Linked List with the max first should return that max."""
+    linked_list: Node = Node(30, Node(20, Node(10, None)))
+    assert max(linked_list) == 30
+
+
+def test_max_last() -> None:
+    """Max of a Linked List with the max last should return that max."""
     linked_list: Node = Node(20, Node(10, Node(30, None)))
     assert max(linked_list) == 30
+
 
 def test_linkify_evens() -> None:
     """Linkify of a list of even ints should return a Linked List of the same values."""
@@ -53,9 +61,10 @@ def test_linkify_count() -> None:
 
 
 def test_scale_empty() -> None:
-    """Scale of an empty Linked List should raise a ValueError."""
-    with pytest.raises(ValueError):
-        scale(None, 2)
+    """Scale of an empty Linked List should return None."""
+    head: Optional[Node] = None
+    if head is None:
+        assert scale(head, 9) is None
 
 
 def test_scale_non_empty() -> None:
