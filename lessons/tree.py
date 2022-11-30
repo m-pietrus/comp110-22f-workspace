@@ -17,6 +17,7 @@ def tree(x: float, y: float) -> None:
     """Plant a happy, little tree."""
     t.penup()
     t.goto(x, y)
+    t.color("dark green")
     t.pendown()
     branch(UP_BASE + random() * UP_FACTOR, random() * TRUNK_FACTOR + TRUNK_BASE)
     if TRACER is True:
